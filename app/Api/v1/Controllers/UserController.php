@@ -9,12 +9,6 @@ use App\Services\UserService;
 class UserController extends BaseController {
 
     public function store(CreateUserRequest $request, UserService $userService) {
-
-        $user =  $userService->storeUser($request);
-        return $this->response->item($user, new UserTransformer());
-    }
-
-    public function test(){
-        dd('dsfsdf');
+        return $userService->storeUser($request);
     }
 }

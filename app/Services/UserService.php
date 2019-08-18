@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Api\v1\Transformers\UserTransformer;
 use App\Domain;
 use App\Helpers;
 use App\Jobs\email_send_job;
@@ -9,6 +10,7 @@ use App\Member;
 use App\Services\Contracts\CreateUserContract;
 use App\Team;
 use App\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService {
 
@@ -71,6 +73,13 @@ class UserService {
 
         //$this->dispatch(new email_send_job($this->getPassword(),$this->getTeamId($domain_id)));
 
-        return $user;
+        return $this->getUserData($user);
+    }
+
+    private function getUserData($user) {
+        return [
+            'token' => JWTAuth::fromUser($user),
+            'user' => (new UserTransformer)->transform($user)
+        ];
     }
 }
