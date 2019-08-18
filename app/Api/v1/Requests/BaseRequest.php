@@ -4,7 +4,7 @@ namespace App\Api\v1\Requests;
 
 use Dingo\Api\Http\FormRequest;
 
-class Request extends FormRequest {
+class BaseRequest extends FormRequest {
 
     public function authorize() {
         return true;

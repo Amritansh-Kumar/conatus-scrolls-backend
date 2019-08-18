@@ -39,4 +39,8 @@ class User extends Authenticatable
 
     const LEADER = 'leader';
     const MEMBER = 'member';
+
+    public function Team() {
+        return $this->belongsTo(Team::class);
+    }
 }

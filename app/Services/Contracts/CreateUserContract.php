@@ -3,7 +3,8 @@
 namespace App\Services\Contracts;
 
 interface CreateUserContract {
-    public function getName();
+    public function getFirstName();
+    public function getLastName();
     public function getMobNo();
     public function getCollege();
     public function getStatus();
@@ -11,8 +12,8 @@ interface CreateUserContract {
     public function getEmail();
     public function getPassword();
     public function getTeamName();
-    public function getDomain();
-    public function getTopic();
+    public function getDomainId();
+    public function getTopicId();
     public function getMember1Name();
     public function getMember2Name();
     public function getMember1Email();

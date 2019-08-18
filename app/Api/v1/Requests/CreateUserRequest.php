@@ -4,9 +4,10 @@ namespace App\Api\v1\Requests;
 
 use App\Services\Contracts\CreateUserContract;
 
-class CreateUserRequest extends Request implements CreateUserContract {
+class CreateUserRequest extends BaseRequest implements CreateUserContract {
 
-    const NAME = 'name';
+    const FIRST_NAME = 'first_name';
+    const LAST_NAME = 'last_name';
     const MOB_NO = 'mob_no';
     const COLLEGE = 'college';
     const STATUS = 'status';
@@ -14,8 +15,8 @@ class CreateUserRequest extends Request implements CreateUserContract {
     const EMAIL = 'email';
     const PASSWORD = 'password';
     const TEAM_NAME = 'team_name';
-    const DOMAIN = 'domain';
-    const TOPIC = 'topic';
+    const DOMAIN_ID = 'domain_id';
+    const TOPIC_ID = 'topic_id';
     const MEMBER1_NAME = 'member1_name';
     const MEMBER2_NAME = 'member2_name';
     const MEMBER1_EMAIL = 'member1_email';
@@ -23,21 +24,26 @@ class CreateUserRequest extends Request implements CreateUserContract {
 
     public function rules() {
         return [
-            self::NAME => 'required',
+            self::FIRST_NAME => 'required|string',
+            self::LAST_NAME => 'required|string',
             self::MOB_NO => 'required',
-            self::COLLEGE => 'required',
-            self::STATUS => 'required',
-            self::HOSTEL_ACCOMODATION => 'required',
+            self::COLLEGE => 'required|string',
+            self::STATUS => 'required|string',
+            self::HOSTEL_ACCOMODATION => 'required|boolean',
             self::EMAIL => 'required|email',
-            self::PASSWORD => 'required|min:6',
-            self::TEAM_NAME => 'required',
-            self::DOMAIN => 'required',
-            self::TOPIC => 'required',
+            self::PASSWORD => 'required|min:11',
+            self::TEAM_NAME => 'required|string',
+            self::DOMAIN_ID => 'required|exists:domains,id',
+            self::TOPIC_ID => 'required|exists:topics,id',
         ];
     }
 
-    public function getName() {
-        return $this->get(self::NAME);
+    public function getFirstName() {
+        return $this->get(self::FIRST_NAME);
+    }
+
+    public function getLastName() {
+        return $this->get(self::LAST_NAME);
     }
 
     public function getMobNo() {
@@ -68,12 +74,12 @@ class CreateUserRequest extends Request implements CreateUserContract {
         return $this->get(self::TEAM_NAME);
     }
 
-    public function getDomain() {
-        return $this->get(self::DOMAIN);
+    public function getDomainId() {
+        return $this->get(self::DOMAIN_ID);
     }
 
-    public function getTopic() {
-        return $this->get(self::TOPIC);
+    public function getTopicId() {
+        return $this->get(self::TOPIC_ID);
     }
 
     public function getMember1Name() {
