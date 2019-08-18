@@ -13,6 +13,6 @@ class UserController extends BaseController {
     }
 
     public function store(CreateUserRequest $request) {
-        $this->userService->storeUser($request);
+        return $this->userService->storeUser($request);
     }
 }
