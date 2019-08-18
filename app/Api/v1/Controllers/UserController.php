@@ -2,13 +2,17 @@
 
 namespace App\Api\v1\Controllers;
 
-use App\Api\v1\Requests\CreateUserRequest;
-use App\Api\v1\Transformers\UserTransformer;
+use App\Api\v1\Requests\CreateLeaderRequest;
+use App\Api\v1\Requests\CreateMemberRequest;
 use App\Services\UserService;
 
 class UserController extends BaseController {
 
-    public function store(CreateUserRequest $request, UserService $userService) {
+    public function storeLeader(CreateLeaderRequest $request, UserService $userService) {
         return $userService->storeUser($request);
+    }
+
+    public function storeMember(CreateMemberRequest $request, UserService $userService) {
+        return $userService->storeMember($request);
     }
 }

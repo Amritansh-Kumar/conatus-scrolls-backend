@@ -2,12 +2,11 @@
 
 namespace App\Services\Contracts;
 
-interface CreateUserContract {
+interface CreateLeaderContract {
     public function getFirstName();
     public function getLastName();
     public function getMobNo();
     public function getCollege();
-    public function getStatus();
     public function getHostelAccomodation();
     public function getEmail();
     public function getPassword();

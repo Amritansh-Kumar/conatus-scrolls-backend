@@ -2,15 +2,14 @@
 
 namespace App\Api\v1\Requests;
 
-use App\Services\Contracts\CreateUserContract;
+use App\Services\Contracts\CreateLeaderContract;
 
-class CreateUserRequest extends BaseRequest implements CreateUserContract {
+class CreateLeaderRequest extends BaseRequest implements CreateLeaderContract {
 
     const FIRST_NAME = 'first_name';
     const LAST_NAME = 'last_name';
     const MOB_NO = 'mob_no';
     const COLLEGE = 'college';
-    const STATUS = 'status';
     const HOSTEL_ACCOMODATION = 'hostel_accomodation';
     const EMAIL = 'email';
     const PASSWORD = 'password';
@@ -28,7 +27,6 @@ class CreateUserRequest extends BaseRequest implements CreateUserContract {
             self::LAST_NAME => 'required|string',
             self::MOB_NO => 'required',
             self::COLLEGE => 'required|string',
-            self::STATUS => 'required|string',
             self::HOSTEL_ACCOMODATION => 'required|boolean',
             self::EMAIL => 'required|email',
             self::PASSWORD => 'required|min:11',
@@ -52,10 +50,6 @@ class CreateUserRequest extends BaseRequest implements CreateUserContract {
 
     public function getCollege() {
         return $this->get(self::COLLEGE);
-    }
-
-    public function getStatus() {
-        return $this->get(self::STATUS);
     }
 
     public function getHostelAccomodation() {
