@@ -26,5 +26,7 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
     $api->post('member', $baseControllersPath . 'UserController@storeMember');
 
+    $api->patch('user/update', $baseControllersPath . 'UserController@update');
+
 });
 

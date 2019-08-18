@@ -9,8 +9,10 @@ use App\Jobs\email_send_job;
 use App\Member;
 use App\Services\Contracts\CreateLeaderContract;
 use App\Services\Contracts\CreateMemberContract;
+use App\Services\Contracts\UpdateUserContract;
 use App\Team;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -71,14 +73,7 @@ class UserService {
 
         //$this->dispatch(new email_send_job($this->getPassword(),$this->getTeamId($domain_id)));
 
-        return $this->getUserData($user);
-    }
-
-    private function getUserData($user) {
-        return [
-            'token' => JWTAuth::fromUser($user),
-            'user' => (new UserTransformer)->transform($user)
-        ];
+        return $user;
     }
 
     public function storeMember(CreateMemberContract $contract) {
@@ -94,6 +89,25 @@ class UserService {
         $user->password = $contract->getPassword();
         $user->save();
 
-        return $this->getUserData($user);
+        return $user;
+    }
+
+    public function update(UpdateUserContract $contract) {
+        $user = Auth::user();
+
+        if($contract->hasHostelAccomodation()) {
+            $user->hostel_accomodation = $contract->getHostelAccomodation();
+        }
+
+        if($contract->hasDomainId()) {
+            $user->domain_id = $contract->getDomainId();
+        }
+
+        if($contract->hasTopicId()) {
+            $user->topic_id = $contract->getTopicId();
+        }
+
+        $user->save();
+        return $user;
     }
 }
