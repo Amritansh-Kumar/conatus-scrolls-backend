@@ -28,5 +28,7 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
     $api->patch('user/update', $baseControllersPath . 'UserController@update');
 
+    $api->get('login/leader', $baseControllersPath . 'UserController@loginLeader');
+
 });
 

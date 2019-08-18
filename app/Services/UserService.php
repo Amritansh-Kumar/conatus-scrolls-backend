@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Api\v1\Exceptions\InvalidCredentialsException;
 use App\Api\v1\Transformers\UserTransformer;
 use App\Domain;
 use App\Helpers;
@@ -9,11 +10,13 @@ use App\Jobs\email_send_job;
 use App\Member;
 use App\Services\Contracts\CreateLeaderContract;
 use App\Services\Contracts\CreateMemberContract;
+use App\Services\Contracts\LoginContract;
 use App\Services\Contracts\UpdateUserContract;
 use App\Team;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService {
@@ -109,5 +112,33 @@ class UserService {
 
         $user->save();
         return $user;
+    }
+
+    public function login(loginContract $contract) {
+
+        $credentials = $contract->only('email', 'password');
+
+        $user = User::where('email', $contract->getEmail())->first();
+
+        if (!$user) {
+            throw new InvalidCredentialsException();
+        }
+
+        if (Hash::check($user->password, $contract->getPassword())) {
+            $token = JWTAuth::fromUser($user);
+        } else {
+            try {
+                if (!$token = JWTAuth::attempt($credentials)) {
+                    throw new InvalidCredentialsException();
+                }
+            } catch (JWTException $e) {
+                throw new InvalidCredentialsException();
+            }
+        }
+
+        return [
+            'token'          => $token,
+            'user'           => (new UserTransformer())->transform($user)
+        ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Api\v1\Controllers;
 
 use App\Api\v1\Requests\CreateLeaderRequest;
 use App\Api\v1\Requests\CreateMemberRequest;
+use App\Api\v1\Requests\LoginRequest;
 use App\Api\v1\Requests\UpdateUserRequest;
 use App\Api\v1\Transformers\UserTransformer;
 use App\Services\UserService;
@@ -24,5 +25,9 @@ class UserController extends BaseController {
     public function update(UpdateUserRequest $request, UserService $userService) {
         $user = $userService->update($request);
         return $this->response->item($user, new UserTransformer());
+    }
+
+    public function loginLeader(loginRequest $request, UserService $userService) {
+        return $userService->login($request);
     }
 }
