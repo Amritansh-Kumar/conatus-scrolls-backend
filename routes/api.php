@@ -21,5 +21,8 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
     $api->get('test', $baseControllersPath. 'UserController@test');
 
     $api->post('leader', $baseControllersPath . 'UserController@store');
+
+    $api->get('domains', $baseControllersPath . 'DomainController@fetchDomains');
+
 });
 
