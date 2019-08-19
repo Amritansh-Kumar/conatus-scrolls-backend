@@ -145,14 +145,14 @@ class UserService {
     public function loginMember(loginContract $contract) {
         $credentials = $contract->only('email', 'password');
 
-        $member = Member::where('email', $contract->getEmail())->first();
+        $user = Member::where('email', $contract->getEmail())->first();
 
-        if (!$member) {
+        if (!$user) {
             throw new InvalidCredentialsException();
         }
 
-        if(Hash::check($member->password, $contract->getPassword())) {
-            $token = JWTAuth::fromUser($member);
+        if(Hash::check($user->password, $contract->getPassword())) {
+            $token = JWTAuth::fromUser($user);
         } else {
             try {
                 if (!$token = JWTAuth::attempt($credentials)) {
@@ -165,7 +165,7 @@ class UserService {
 
         return [
             'token'          => $token,
-            'member'           => (new UserTransformer())->transform($member)
+            'member'           => (new UserTransformer())->transform($user)
         ];
     }
 }
