@@ -117,56 +117,53 @@ class UserService {
 
     public function login(loginContract $contract) {
 
-        $credentials = $contract->only('email', 'password');
+        $credentials = $contract->only('email', 'password', 'team_id');
 
-        $user = User::where('email', $contract->getEmail())->first();
+        $member = Member::where('email', $contract->getEmail())->first()->where('team_id', $contract->getTeamId());
 
-        if (!$user) {
-            throw new InvalidCredentialsException();
-        }
+        if($member) {
 
-        if (Hash::check($user->password, $contract->getPassword())) {
-            $token = JWTAuth::fromUser($user);
-        } else {
-            try {
-                if (!$token = JWTAuth::attempt($credentials)) {
+            if (Hash::check($member->password, $contract->getPassword())) {
+                $token = JWTAuth::fromUser($member);
+            } else {
+                try {
+                    if (!$token = JWTAuth::attempt($credentials)) {
+                        throw new InvalidCredentialsException();
+                    }
+                } catch (JWTException $e) {
                     throw new InvalidCredentialsException();
                 }
-            } catch (JWTException $e) {
+            }
+
+            return [
+                'token'          => $token,
+                'user'           => (new MemberTransformer())->transform($member)
+            ];
+        }
+
+        else {
+            $user = User::where('email', $contract->getEmail())->first()->where('team_id', $contract->getTeamId());
+
+            if (!$user) {
                 throw new InvalidCredentialsException();
             }
-        }
 
-        return [
-            'token'          => $token,
-            'user'           => (new UserTransformer())->transform($user)
-        ];
-    }
-
-    public function loginMember(loginContract $contract) {
-        $credentials = $contract->only('email', 'password');
-
-        $user = Member::where('email', $contract->getEmail())->first();
-
-        if (!$user) {
-            throw new InvalidCredentialsException();
-        }
-
-        if($user->password === $contract->getPassword()) {
-            $token = JWTAuth::fromUser($user);
-        } else {
-            try {
-                if (!$token = JWTAuth::attempt($credentials)) {
+            if (Hash::check($user->password, $contract->getPassword())) {
+                $token = JWTAuth::fromUser($user);
+            } else {
+                try {
+                    if (!$token = JWTAuth::attempt($credentials)) {
+                        throw new InvalidCredentialsException();
+                    }
+                } catch (JWTException $e) {
                     throw new InvalidCredentialsException();
                 }
-            } catch (JWTException $e) {
-                throw new InvalidCredentialsException();
             }
-        }
 
-        return [
-            'token'          => $token,
-            'member'           => (new MemberTransformer())->transform($user)
-        ];
+            return [
+                'token'          => $token,
+                'user'           => (new UserTransformer())->transform($user)
+            ];
+        }
     }
 }

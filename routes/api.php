@@ -24,9 +24,7 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
     $api->get('domains', $baseControllersPath . 'DomainController@fetchDomains');
 
-    $api->get('login/leader', $baseControllersPath . 'UserController@loginLeader');
-
-    $api->get('login/member', $baseControllersPath . 'UserController@loginMember');
+    $api->get('login', $baseControllersPath . 'UserController@loginLeader');
 
 });
 

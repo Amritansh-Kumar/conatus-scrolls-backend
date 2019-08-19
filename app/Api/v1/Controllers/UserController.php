@@ -27,11 +27,8 @@ class UserController extends BaseController {
         return $this->response->item($user, new UserTransformer());
     }
 
-    public function loginLeader(loginRequest $request, UserService $userService) {
+    public function login(loginRequest $request, UserService $userService) {
         return $userService->login($request);
     }
 
-    public function loginMember(loginRequest $request, UserService $userService) {
-        return $userService->loginMember($request);
-    }
 }
