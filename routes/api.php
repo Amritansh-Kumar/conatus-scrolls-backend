@@ -24,11 +24,16 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
     $api->get('domains', $baseControllersPath . 'DomainController@fetchDomains');
 
+    $api->get('login/leader', $baseControllersPath . 'UserController@loginLeader');
+
+    $api->get('login/member', $baseControllersPath . 'UserController@loginMember');
+
+});
+
+$api->version('v1',['middleware' => ['jwt.auth']],function(Router $api) use ($baseControllersPath) {
+
     $api->post('member', $baseControllersPath . 'UserController@storeMember');
 
     $api->patch('user/update', $baseControllersPath . 'UserController@update');
-
-    $api->get('login/leader', $baseControllersPath . 'UserController@loginLeader');
-
 });
 

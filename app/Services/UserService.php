@@ -141,4 +141,31 @@ class UserService {
             'user'           => (new UserTransformer())->transform($user)
         ];
     }
+
+    public function loginMember(loginContract $contract) {
+        $credentials = $contract->only('email', 'password');
+
+        $member = Member::where('email', $contract->getEmail())->first();
+
+        if (!$member) {
+            throw new InvalidCredentialsException();
+        }
+
+        if(Hash::check($member->password, $contract->getPassword())) {
+            $token = JWTAuth::fromUser($member);
+        } else {
+            try {
+                if (!$token = JWTAuth::attempt($credentials)) {
+                    throw new InvalidCredentialsException();
+                }
+            } catch (JWTException $e) {
+                throw new InvalidCredentialsException();
+            }
+        }
+
+        return [
+            'token'          => $token,
+            'member'           => (new UserTransformer())->transform($member)
+        ];
+    }
 }
