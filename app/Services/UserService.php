@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Api\v1\Exceptions\InvalidCredentialsException;
+use App\Api\v1\Transformers\MemberTransformer;
 use App\Api\v1\Transformers\UserTransformer;
 use App\Domain;
 use App\Helpers;
@@ -151,7 +152,7 @@ class UserService {
             throw new InvalidCredentialsException();
         }
 
-        if(Hash::check($user->password, $contract->getPassword())) {
+        if($user->password === $contract->getPassword()) {
             $token = JWTAuth::fromUser($user);
         } else {
             try {
@@ -165,7 +166,7 @@ class UserService {
 
         return [
             'token'          => $token,
-            'member'           => (new UserTransformer())->transform($user)
+            'member'           => (new MemberTransformer())->transform($user)
         ];
     }
 }

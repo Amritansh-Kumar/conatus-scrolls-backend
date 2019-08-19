@@ -15,6 +15,7 @@ trait UserDetailTrait {
           'status'          => $user->status,
           'email' => $user->email,
           'team_id' => $user->team_id,
+          'registered' => TRUE
         ];
     }
 }
