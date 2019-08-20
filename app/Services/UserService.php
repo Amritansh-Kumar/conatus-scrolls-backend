@@ -43,7 +43,7 @@ class UserService {
         $team = new Team();
         $team->team_name = $contract->getTeamName();
         $team->domain_id = $domain_id;
-        $team->topic_id = $contract->getTopicId();
+//        $team->topic_id = $contract->getTopicId();
         $team->team_id = $this->getTeamId($domain_id);
         $team->save();
 

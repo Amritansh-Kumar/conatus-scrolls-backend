@@ -12,7 +12,7 @@ interface CreateLeaderContract {
     public function getPassword();
     public function getTeamName();
     public function getDomainId();
-    public function getTopicId();
+//    public function getTopicId();
     public function getMember1Name();
     public function getMember2Name();
     public function getMember1Email();

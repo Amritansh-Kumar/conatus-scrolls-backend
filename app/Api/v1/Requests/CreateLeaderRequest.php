@@ -15,7 +15,7 @@ class CreateLeaderRequest extends BaseRequest implements CreateLeaderContract {
     const PASSWORD = 'password';
     const TEAM_NAME = 'team_name';
     const DOMAIN_ID = 'domain_id';
-    const TOPIC_ID = 'topic_id';
+//    const TOPIC_ID = 'topic_id';
     const MEMBER1_NAME = 'member1_name';
     const MEMBER2_NAME = 'member2_name';
     const MEMBER1_EMAIL = 'member1_email';
@@ -32,7 +32,7 @@ class CreateLeaderRequest extends BaseRequest implements CreateLeaderContract {
             self::PASSWORD => 'required|min:11',
             self::TEAM_NAME => 'required|string',
             self::DOMAIN_ID => 'required|exists:domains,id',
-            self::TOPIC_ID => 'required|exists:topics,id',
+//            self::TOPIC_ID => 'required|exists:topics,id',
         ];
     }
 
@@ -72,9 +72,9 @@ class CreateLeaderRequest extends BaseRequest implements CreateLeaderContract {
         return $this->get(self::DOMAIN_ID);
     }
 
-    public function getTopicId() {
-        return $this->get(self::TOPIC_ID);
-    }
+//    public function getTopicId() {
+//        return $this->get(self::TOPIC_ID);
+//    }
 
     public function getMember1Name() {
         return $this->get(self::MEMBER1_NAME);

@@ -18,7 +18,7 @@ class CreateTeamsTable extends Migration
             $table->string('team_id');
             $table->string('team_name');
             $table->unsignedInteger('domain_id');
-            $table->unsignedInteger('topic_id');
+            $table->unsignedInteger('topic_id')->nullable();
             $table->timestamps();
 
             $table->foreign('domain_id')->references('id')->on('domains')->onDelete('cascade');
