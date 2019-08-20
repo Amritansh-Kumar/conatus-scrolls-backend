@@ -18,7 +18,9 @@ $baseControllersPath = 'App\Api\v1\Controllers\\';
 
 $api->version('v1', function ($api) use ($baseControllersPath) {
 
-    $api->get('test', $baseControllersPath. 'UserController@test');
+    $api->get('test', function () {
+        return "working fine";
+    });
 
     $api->post('leader', $baseControllersPath . 'UserController@storeLeader');
 
