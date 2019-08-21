@@ -2,7 +2,7 @@
 
 use Dingo\Api\Routing\Router;
 
-$api = app('Dingo\Api\Routing\Router');
+$api                 = app('Dingo\Api\Routing\Router');
 $baseControllersPath = 'App\Api\v1\Controllers\\';
 
 /*
@@ -22,17 +22,17 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
         return "working fine";
     });
 
-    $api->post('leader', $baseControllersPath . 'UserController@storeLeader');
+    $api->post('register/leader', $baseControllersPath . 'UserController@storeLeader');
 
     $api->get('domains', $baseControllersPath . 'DomainController@fetchDomains');
 
-    $api->get('login', $baseControllersPath . 'UserController@loginLeader');
+    $api->post('authenticate', $baseControllersPath . 'AuthController@authenticate');
 
 });
 
-$api->version('v1',['middleware' => ['jwt.auth']],function(Router $api) use ($baseControllersPath) {
+$api->version('v1', ['middleware' => ['jwt.auth']], function (Router $api) use ($baseControllersPath) {
 
-    $api->post('member', $baseControllersPath . 'UserController@storeMember');
+    $api->post('register/member', $baseControllersPath . 'UserController@storeMember');
 
     $api->patch('user/update', $baseControllersPath . 'UserController@update');
 });

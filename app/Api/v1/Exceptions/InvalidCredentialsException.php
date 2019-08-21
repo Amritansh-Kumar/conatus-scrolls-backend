@@ -2,8 +2,9 @@
 
 namespace App\Api\v1\Exceptions;
 
+
 class InvalidCredentialsException extends HttpException {
-    const ERROR_MESSAGE = "Email or Password is Invalid";
+    const ERROR_MESSAGE = "Incorrect Login Details";
 
     public function __construct()
     {

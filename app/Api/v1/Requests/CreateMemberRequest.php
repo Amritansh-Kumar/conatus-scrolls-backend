@@ -6,25 +6,27 @@ use App\Services\Contracts\CreateMemberContract;
 
 class CreateMemberRequest extends BaseRequest implements CreateMemberContract {
 
-    const FIRST_NAME = 'first_name';
-    const LAST_NAME = 'last_name';
-    const MOB_NO = 'mob_no';
-    const COLLEGE = 'college';
+    const FIRST_NAME          = 'first_name';
+    const LAST_NAME           = 'last_name';
+    const MOB_NO              = 'mob_no';
+    const COLLEGE             = 'college';
     const HOSTEL_ACCOMODATION = 'hostel_accomodation';
-    const EMAIL = 'email';
-    const PASSWORD = 'password';
-    const TEAM_ID = 'team_id';
+    const EMAIL               = 'email';
+    const PASSWORD            = 'password';
+    const TEAM_ID             = 'team_id';
+    const SCROLLS_ID          = 'scrolls_id';
 
     public function rules() {
         return [
-            self::FIRST_NAME => 'required|string',
-            self::LAST_NAME => 'required|string',
-            self::MOB_NO => 'required',
-            self::COLLEGE => 'required|string',
+            self::FIRST_NAME          => 'required|string',
+            self::LAST_NAME           => 'required|string',
+            self::MOB_NO              => 'required',
+            self::COLLEGE             => 'required|string',
             self::HOSTEL_ACCOMODATION => 'required|boolean',
-            self::EMAIL => 'required|email',
-            self::PASSWORD => 'required|min:11',
-            self::TEAM_ID => 'required'
+            self::EMAIL               => 'required|email',
+            self::PASSWORD            => 'required|min:8',
+            self::TEAM_ID             => 'required|exists:teams,id',
+            self::SCROLLS_ID          => 'required|string'
         ];
     }
 
@@ -58,5 +60,9 @@ class CreateMemberRequest extends BaseRequest implements CreateMemberContract {
 
     public function getTeamId() {
         return $this->get(self::TEAM_ID);
+    }
+
+    public function getScrollsId() {
+        return $this->get(self::SCROLLS_ID);
     }
 }

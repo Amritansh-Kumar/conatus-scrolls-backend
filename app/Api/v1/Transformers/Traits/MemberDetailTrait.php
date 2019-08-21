@@ -7,9 +7,8 @@ use App\Member;
 trait MemberDetailTrait {
     public function getAttributes(Member $member) {
         return [
-            'email' => $member->email,
+            'email'   => $member->email,
             'team_id' => $member->team_id,
-            'registered' => FALSE
         ];
     }
 }

@@ -6,32 +6,32 @@ use App\Services\Contracts\CreateLeaderContract;
 
 class CreateLeaderRequest extends BaseRequest implements CreateLeaderContract {
 
-    const FIRST_NAME = 'first_name';
-    const LAST_NAME = 'last_name';
-    const MOB_NO = 'mob_no';
-    const COLLEGE = 'college';
+    const FIRST_NAME          = 'first_name';
+    const LAST_NAME           = 'last_name';
+    const MOB_NO              = 'mob_no';
+    const COLLEGE             = 'college';
     const HOSTEL_ACCOMODATION = 'hostel_accomodation';
-    const EMAIL = 'email';
-    const PASSWORD = 'password';
-    const TEAM_NAME = 'team_name';
-    const DOMAIN_ID = 'domain_id';
+    const EMAIL               = 'email';
+    const PASSWORD            = 'password';
+    const TEAM_NAME           = 'team_name';
+    const DOMAIN_ID           = 'domain_id';
 //    const TOPIC_ID = 'topic_id';
-    const MEMBER1_NAME = 'member1_name';
-    const MEMBER2_NAME = 'member2_name';
+    const MEMBER1_NAME  = 'member1_name';
+    const MEMBER2_NAME  = 'member2_name';
     const MEMBER1_EMAIL = 'member1_email';
     const MEMBER2_EMAIL = 'member2_email';
 
     public function rules() {
         return [
-            self::FIRST_NAME => 'required|string',
-            self::LAST_NAME => 'required|string',
-            self::MOB_NO => 'required',
-            self::COLLEGE => 'required|string',
+            self::FIRST_NAME          => 'required|string',
+            self::LAST_NAME           => 'required|string',
+            self::MOB_NO              => 'required',
+            self::COLLEGE             => 'required|string',
             self::HOSTEL_ACCOMODATION => 'required|boolean',
-            self::EMAIL => 'required|email',
-            self::PASSWORD => 'required|min:11',
-            self::TEAM_NAME => 'required|string',
-            self::DOMAIN_ID => 'required|exists:domains,id',
+            self::EMAIL               => 'required|email',
+            self::PASSWORD            => 'required|min:8',
+            self::TEAM_NAME           => 'required|string',
+            self::DOMAIN_ID           => 'required|exists:domains,id',
 //            self::TOPIC_ID => 'required|exists:topics,id',
         ];
     }

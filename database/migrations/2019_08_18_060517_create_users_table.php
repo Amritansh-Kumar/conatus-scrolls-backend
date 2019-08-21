@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->boolean('hostel_accomodation');
             $table->enum('status', [User::LEADER, User::MEMBER]);
             $table->string('email')->unique();
+            $table->string('scrolls_id');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
