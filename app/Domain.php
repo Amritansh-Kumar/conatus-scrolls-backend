@@ -20,10 +20,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Domain whereDomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Domain whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Domain whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Team[] $teams
  */
 class Domain extends Model {
 
     public function topics() {
         return $this->hasMany(Topic::class);
+    }
+
+    public function teams(){
+        return $this->hasMany(Team::class);
     }
 }

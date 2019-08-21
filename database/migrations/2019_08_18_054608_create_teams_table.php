@@ -4,18 +4,16 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeamsTable extends Migration
-{
+class CreateTeamsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('teams', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('team_id');
+            $table->string('team_id')->unique();
             $table->string('team_name');
             $table->unsignedInteger('domain_id');
             $table->unsignedInteger('topic_id')->nullable();
@@ -31,8 +29,7 @@ class CreateTeamsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('teams');
     }
 }

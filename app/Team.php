@@ -25,7 +25,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Team whereTeamName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Team whereTopicId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Team whereUpdatedAt($value)
+ * @property-read \App\Domain $domain
+ * @property-read \App\Topic|null $topic
  */
 class Team extends Model {
+
+    public function domain(){
+        return $this->belongsTo(Domain::class);
+    }
+
+    public function topic(){
+        return $this->belongsTo(Topic::class);
+    }
 
 }

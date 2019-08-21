@@ -22,9 +22,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereTopic($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Team[] $teams
  */
 class Topic extends Model {
-     public function domain() {
-         return $this->belongsTo(Domain::class);
-     }
+    public function domain() {
+        return $this->belongsTo(Domain::class);
+    }
+
+    public function teams() {
+        return $this->hasMany(Team::class);
+    }
 }

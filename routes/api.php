@@ -26,6 +26,8 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
     $api->get('domains', $baseControllersPath . 'DomainController@fetchDomains');
 
+    $api->get('domains/{id}/topics', $baseControllersPath . 'DomainController@indexTopics');
+
     $api->post('authenticate', $baseControllersPath . 'AuthController@authenticate');
 
 });
@@ -35,5 +37,11 @@ $api->version('v1', ['middleware' => ['jwt.auth']], function (Router $api) use (
     $api->post('register/member', $baseControllersPath . 'UserController@storeMember');
 
     $api->patch('user/update', $baseControllersPath . 'UserController@update');
+
+    $api->get('team-details/{id}', $baseControllersPath . 'TeamController@show');
+
+    $api->group(['middleware' => 'api.auth.leader'], function ($api) use ($baseControllersPath) {
+        $api->put('team-details/{id}', $baseControllersPath . 'TeamController@update');
+    });
 });
 
