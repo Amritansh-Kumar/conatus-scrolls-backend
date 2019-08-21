@@ -3,16 +3,19 @@
 namespace App\Services;
 
 use App\Helpers;
+use App\Jobs\RegistrationMailJob;
 use App\Member;
 use App\Services\Contracts\CreateLeaderContract;
 use App\Services\Contracts\CreateMemberContract;
 use App\Services\Contracts\UpdateUserContract;
 use App\Team;
 use App\User;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserService {
+    use DispatchesJobs;
 
     private function getTeamId($id) {
         return Helpers::generateTeamId($id);
@@ -44,6 +47,7 @@ class UserService {
 
         $memberEmails    = [];
         $memberPasswords = [];
+        $memberNames     = [];
 
         $member           = new Member();
         $member->team_id  = $teamId;
@@ -51,9 +55,10 @@ class UserService {
         $member->email    = $contract->getMember1Email();
         $password         = Helpers::generatePassword();
         $member->password = Hash::make("secret123");
-        $member->save();
+//        $member->save();
         array_push($memberEmails, $contract->getMember1Email());
         array_push($memberPasswords, $password);
+        array_push($memberNames, $contract->getMember1Name());
 
         if ($contract->hasMember2Name()) {
             $another_member           = new Member();
@@ -62,12 +67,14 @@ class UserService {
             $another_member->email    = $contract->getMember2Email();
             $password                 = Helpers::generatePassword();
             $another_member->password = Hash::make("secret123");
-            $another_member->save();
+//            $another_member->save();
             array_push($memberEmails, $contract->getMember2Email());
             array_push($memberPasswords, $password);
+            array_push($memberNames, $contract->getMember2Name());
         }
 
-        //$this->dispatch(new email_send_job($this->getPassword(),$this->getTeamId($domain_id)));
+        $job = new RegistrationMailJob($memberEmails, $memberPasswords, $memberNames, $user);
+        $this->dispatch($job);
 
         return $user;
     }

@@ -11,7 +11,12 @@ class Helpers {
     }
 
     public static function generateTeamId($domain_id, $val = 0) {
-        $val++;
+        $lastId = Team::whereDomainId($domain_id)
+            ->latest()->first();
+
+        if ($lastId){
+            $val = $lastId->id + 1;
+        }
         return 'SCROLLS' . $domain_id . $val;
     }
 }
