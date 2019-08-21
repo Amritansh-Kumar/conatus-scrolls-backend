@@ -86,6 +86,11 @@ class UserService {
         $user->scrolls_id          = $contract->getScrollsId();
         $user->save();
 
+        Member::whereEmail($contract->getEmail())
+            ->where('team_id', $contract->getScrollsId())
+            ->delete();
+
+
         return $user;
     }
 

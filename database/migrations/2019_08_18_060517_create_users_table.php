@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('team_id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('mob_no');
+            $table->string('mob_no')->unique();
             $table->string('college');
             $table->boolean('hostel_accomodation');
             $table->enum('status', [User::LEADER, User::MEMBER]);
