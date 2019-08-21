@@ -54,8 +54,8 @@ class UserService {
         $member->name     = $contract->getMember1Name();
         $member->email    = $contract->getMember1Email();
         $password         = Helpers::generatePassword();
-        $member->password = Hash::make("secret123");
-//        $member->save();
+        $member->password = Hash::make($password);
+        $member->save();
         array_push($memberEmails, $contract->getMember1Email());
         array_push($memberPasswords, $password);
         array_push($memberNames, $contract->getMember1Name());
@@ -66,8 +66,8 @@ class UserService {
             $another_member->name     = $contract->getMember2Name();
             $another_member->email    = $contract->getMember2Email();
             $password                 = Helpers::generatePassword();
-            $another_member->password = Hash::make("secret123");
-//            $another_member->save();
+            $another_member->password = Hash::make($password);
+            $another_member->save();
             array_push($memberEmails, $contract->getMember2Email());
             array_push($memberPasswords, $password);
             array_push($memberNames, $contract->getMember2Name());

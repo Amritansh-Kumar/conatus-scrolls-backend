@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Mail;
 class RegistrationMailJob implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 5;
+
     private $memberEmails;
     private $memberPasswords;
     private $memberNames;
@@ -46,7 +48,6 @@ class RegistrationMailJob implements ShouldQueue {
         });
 
 //        $this->sendMail($this->leader->email, $message);
-
 
 
         for ($i = 0; $i < count($this->memberEmails); $i++) {
