@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Api\v1\Exceptions\MemberAlreadyExistsException;
+use App\Api\v1\Exceptions\UserAlreadyExistsException;
 use App\Helpers;
 use App\Jobs\RegistrationMailJob;
 use App\Member;
@@ -32,6 +34,28 @@ class UserService {
         $team->team_id   = $teamId;
         $team->save();
 
+        $user = User::whereEmail($contract->getEmail())
+            ->first();
+
+        if ($user) {
+            throw new UserAlreadyExistsException();
+        }
+
+        $memberEmails = [];
+        array_push($memberEmails, $contract->getMember1Email());
+
+        if ($contract->hasMember2Email()) {
+            array_push($memberEmails, $contract->getMember2Email());
+        }
+
+        $members = Member::query()->whereIn('email', $memberEmails)
+            ->get();
+
+        if ($members) {
+            throw new MemberAlreadyExistsException();
+        }
+
+
         $user                      = new User();
         $user->team_id             = $team->id;
         $user->first_name          = $contract->getFirstName();
@@ -45,30 +69,31 @@ class UserService {
         $user->password            = $contract->getPassword();
         $user->save();
 
-        $memberEmails    = [];
         $memberPasswords = [];
         $memberNames     = [];
 
-        $member           = new Member();
-        $member->team_id  = $teamId;
-        $member->name     = $contract->getMember1Name();
-        $member->email    = $contract->getMember1Email();
-        $password         = Helpers::generatePassword();
-        $member->password = Hash::make($password);
+        $member             = new Member();
+        $member->team_id    = $team->id;
+        $member->scrolls_id = $teamId;
+        $member->name       = $contract->getMember1Name();
+        $member->email      = $contract->getMember1Email();
+        $password           = Helpers::generatePassword();
+        $member->password   = Hash::make($password);
         $member->save();
-        array_push($memberEmails, $contract->getMember1Email());
+
         array_push($memberPasswords, $password);
         array_push($memberNames, $contract->getMember1Name());
 
         if ($contract->hasMember2Name()) {
             $another_member           = new Member();
-            $another_member->team_id  = $teamId;
+            $member->team_id          = $team->id;
+            $member->scrolls_id       = $teamId;
             $another_member->name     = $contract->getMember2Name();
             $another_member->email    = $contract->getMember2Email();
             $password                 = Helpers::generatePassword();
             $another_member->password = Hash::make($password);
             $another_member->save();
-            array_push($memberEmails, $contract->getMember2Email());
+
             array_push($memberPasswords, $password);
             array_push($memberNames, $contract->getMember2Name());
         }
@@ -80,6 +105,14 @@ class UserService {
     }
 
     public function storeMember(CreateMemberContract $contract) {
+        $user = User::whereEmail($contract->getEmail())
+            ->first();
+
+        if ($user) {
+            throw new UserAlreadyExistsException();
+        }
+
+
         $user                      = new User();
         $user->team_id             = $contract->getTeamId();
         $user->first_name          = $contract->getFirstName();

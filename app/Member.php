@@ -27,6 +27,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Member wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Member whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Member whereUpdatedAt($value)
+ * @property string $scrolls_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Member whereScrollsId($value)
  */
 class Member extends Model implements JWTSubject {
 

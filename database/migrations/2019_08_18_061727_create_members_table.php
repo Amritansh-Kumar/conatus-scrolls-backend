@@ -13,11 +13,14 @@ class CreateMembersTable extends Migration {
     public function up() {
         Schema::create('members', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('team_id');
+            $table->unsignedInteger('team_id');
+            $table->string('scrolls_id');
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->timestamps();
+
+            $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
         });
     }
 

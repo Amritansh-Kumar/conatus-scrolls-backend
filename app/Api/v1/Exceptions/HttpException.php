@@ -10,6 +10,8 @@ class HttpException extends \Symfony\Component\HttpKernel\Exception\HttpExceptio
     const TEAM_NOT_FOUND_EXCEPTION             = 5;
     const TOPIC_NOT_FOUND_EXCEPTION            = 6;
     const TOPIC_NOT_BELONG_TO_DOMAIN_EXCEPTION = 7;
+    const USER_ALREDAY_EXISTS_EXCEPTION        = 8;
+    const MEMBER_ALREDAY_EXISTS_EXCEPTION      = 9;
 
     public function __construct($message, $errorCode, $statusCode = 422) {
         parent::__construct($statusCode, $message, null, array(), $errorCode);
