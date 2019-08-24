@@ -28,6 +28,10 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
     $api->get('domains/{id}/topics', $baseControllersPath . 'DomainController@indexTopics');
 
+    $api->post('password/forgot', $baseControllersPath . 'AuthController@forgotPassword');
+
+    $api->post('password/reset/code', $baseControllersPath .'AuthController@resetPasswordByCode');
+
     $api->post('authenticate', $baseControllersPath . 'AuthController@authenticate');
 
 });
