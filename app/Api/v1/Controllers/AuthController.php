@@ -80,4 +80,13 @@ class AuthController extends BaseController {
         }
     }
 
+    public function generateToken($userId) {
+        $user = User::whereId($userId)->first();
+        if (!$user) {
+            throw new UserNotFoundException();
+        }
+
+        return JWTAuth::fromUser($user);
+    }
+
 }
