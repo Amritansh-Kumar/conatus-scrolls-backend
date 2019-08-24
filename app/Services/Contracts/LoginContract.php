@@ -3,7 +3,7 @@
 namespace App\Services\Contracts;
 
 interface LoginContract {
-    public function getTeamId();
+    public function getScrollsId();
     public function getEmail();
     public function getPassword();
 }

@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Team whereUpdatedAt($value)
  * @property-read \App\Domain $domain
  * @property-read \App\Topic|null $topic
+ * @property string $scrolls_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Team whereScrollsId($value)
  */
 class Team extends Model {
 

@@ -13,7 +13,7 @@ class CreateTeamsTable extends Migration {
     public function up() {
         Schema::create('teams', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('team_id')->unique();
+            $table->string('scrolls_id')->unique();
             $table->string('team_name');
             $table->unsignedInteger('domain_id');
             $table->unsignedInteger('topic_id')->nullable();

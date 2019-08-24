@@ -29,7 +29,7 @@ class AuthController extends BaseController {
         $credentials = $request->only('email', 'password');
 
         $member = Member::whereEmail($request->getEmail())
-            ->where('team_id', $request->getTeamId())
+            ->where('scrolls_id', $request->getScrollsId())
             ->first();
 
         if ($member) {
@@ -54,7 +54,7 @@ class AuthController extends BaseController {
             ];
         } else {
             $user = User::whereEmail($request->getEmail())
-                ->where('scrolls_id', $request->getTeamId())
+                ->where('scrolls_id', $request->getScrollsId())
                 ->first();
 
             if (!$user) {
@@ -80,14 +80,4 @@ class AuthController extends BaseController {
         }
     }
 
-
-    public function generateToken($userId) {
-        $user = User::whereId($userId)->first();
-
-        if (!$user) {
-            throw new UserNotFoundException();
-        }
-
-        return JWTAuth::fromUser($user);
-    }
 }

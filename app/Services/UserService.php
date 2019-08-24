@@ -25,15 +25,6 @@ class UserService {
 
     public function storeUser(CreateLeaderContract $contract) {
 
-        $domain_id = $contract->getDomainId();
-
-        $team            = new Team();
-        $team->team_name = $contract->getTeamName();
-        $team->domain_id = $domain_id;
-        $teamId          = $this->getTeamId($domain_id);
-        $team->team_id   = $teamId;
-        $team->save();
-
         $user = User::whereEmail($contract->getEmail())
             ->first();
 
@@ -51,10 +42,18 @@ class UserService {
         $members = Member::query()->whereIn('email', $memberEmails)
             ->get();
 
-        if ($members) {
+        if (count($members) > 0) {
             throw new MemberAlreadyExistsException();
         }
 
+        $domain_id = $contract->getDomainId();
+
+        $team             = new Team();
+        $team->team_name  = $contract->getTeamName();
+        $team->domain_id  = $domain_id;
+        $scrollsId        = $this->getTeamId($domain_id);
+        $team->scrolls_id = $scrollsId;
+        $team->save();
 
         $user                      = new User();
         $user->team_id             = $team->id;
@@ -65,7 +64,7 @@ class UserService {
         $user->hostel_accomodation = $contract->getHostelAccomodation();
         $user->status              = User::LEADER;
         $user->email               = $contract->getEmail();
-        $user->scrolls_id          = $teamId;
+        $user->scrolls_id          = $scrollsId;
         $user->password            = $contract->getPassword();
         $user->save();
 
@@ -74,7 +73,7 @@ class UserService {
 
         $member             = new Member();
         $member->team_id    = $team->id;
-        $member->scrolls_id = $teamId;
+        $member->scrolls_id = $scrollsId;
         $member->name       = $contract->getMember1Name();
         $member->email      = $contract->getMember1Email();
         $password           = Helpers::generatePassword();
@@ -85,13 +84,13 @@ class UserService {
         array_push($memberNames, $contract->getMember1Name());
 
         if ($contract->hasMember2Name()) {
-            $another_member           = new Member();
-            $member->team_id          = $team->id;
-            $member->scrolls_id       = $teamId;
-            $another_member->name     = $contract->getMember2Name();
-            $another_member->email    = $contract->getMember2Email();
-            $password                 = Helpers::generatePassword();
-            $another_member->password = Hash::make($password);
+            $another_member             = new Member();
+            $another_member->team_id    = $team->id;
+            $another_member->scrolls_id = $scrollsId;
+            $another_member->name       = $contract->getMember2Name();
+            $another_member->email      = $contract->getMember2Email();
+            $password                   = Helpers::generatePassword();
+            $another_member->password   = Hash::make($password);
             $another_member->save();
 
             array_push($memberPasswords, $password);
@@ -127,7 +126,7 @@ class UserService {
         $user->save();
 
         Member::whereEmail($contract->getEmail())
-            ->where('team_id', $contract->getScrollsId())
+            ->where('scrolls_id', $contract->getScrollsId())
             ->delete();
 
 
