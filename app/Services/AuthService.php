@@ -13,6 +13,7 @@ use App\Services\Contracts\PasswordResetByCodeContract;
 use App\Services\Contracts\PasswordResetContract;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -21,13 +22,14 @@ class AuthService {
     const PIN_VERIFY_LIMIT = 3;
 
     public function forgotPassword(PasswordResetContract $contract) {
-        $user = User::where('email', $contract->getEmail())->first();
+        $user = User::whereEmail(
+            $contract->getEmail())->first();
 
-        if ( ! $user) {
+        if (!$user) {
             throw new UnauthorizedException;
         }
 
-        $resetQuery = DB::table('password_resets')->where('user_id', $user->id);
+        $resetQuery = DB::table('password_resets')->where('email', $user->email);
         $row        = $resetQuery->first();
 
         if ($row) {
@@ -39,7 +41,7 @@ class AuthService {
             $code = Helpers::generateUniqueId();
             DB::table('password_resets')->insert([
                 'token'      => $code,
-                'user_id'    => $user->id,
+                'email'      => $user->email,
                 'created_at' => Carbon::now()
             ]);
         }
@@ -50,21 +52,17 @@ class AuthService {
     public function resetPasswordByCode(PasswordResetByCodeContract $contract) {
         $query = DB::table('password_resets')->where('token', $contract->getCode());
 
-        if ( ! $query) {
+        $token = $query->first();
+
+        if (!$token) {
             throw new InvalidPasswordResetCodeException();
         }
 
-        $verify = $query->first();
-
-        if ( ! $verify) {
-            throw new InvalidPasswordResetCodeException();
-        }
-
-        if ($verify->attempts >= self::PIN_VERIFY_LIMIT) {
+        if ($token->attempts >= self::PIN_VERIFY_LIMIT) {
             throw new VerifyLimitExceededException;
         }
 
-        if ($verify->token != $contract->getCode()) {
+        if ($token->token != $contract->getCode()) {
             $query->increment('attempts', 1, [
                 'created_at' => Carbon::now()
             ]);
@@ -73,8 +71,8 @@ class AuthService {
 
         $query->delete();
 
-        $user = User::find($verify->user_id);
-        if (is_null($user)) {
+        $user = User::whereEmail($token->email)->first();
+        if (!$user) {
             throw new UserNotFoundException();
         }
 
@@ -87,7 +85,7 @@ class AuthService {
     private function getUserData($user) {
         return [
             'token' => JWTAuth::fromUser($user),
-            'user' => (new UserTransformer)->transform($user)
+            'user'  => (new UserTransformer)->transform($user)
         ];
     }
 }

@@ -37,22 +37,25 @@ class SendPasswordResetEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        $resetLink = Config::get('email.default.password_reset_link');
-        $resetLink = $resetLink . '/' . $this->code;
 
-        $data = [
-            'full_name' => Helpers::getFullName($this->user->first_name, $this->user->last_name),
-            'reset_code' => $this->code,
-            'reset_link' => $resetLink
-        ];
+        $resetLink = env('APP_DASHBOARD_URL') . '/auth/reset-password';
+        $resetLink = $resetLink . '?' . http_build_query([
+                'email' => $this->user->email,
+                'token' => $this->code
+            ]);
 
         $emailHeaders = [
-            'email' => $this->user->email,
+            'email'     => $this->user->email,
             'full_name' => Helpers::getFullName($this->user->first_name, $this->user->last_name),
         ];
 
-        Mail::send('emails.password_reset', $data, function ($message) use ($emailHeaders) {
-            $message->to($emailHeaders['email'], $emailHeaders['full_name'])->subject('Password Reset Link!');
+        $body = "Use this link to reset your password \n " . $resetLink;
+
+        Mail::send([], [], function ($message) use ($emailHeaders, $body) {
+
+            $message->to($emailHeaders['email'], $emailHeaders['full_name'])
+                ->subject('Password Reset Link!')
+                ->setBody($body);
         });
     }
 }
