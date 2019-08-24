@@ -55,6 +55,12 @@ class TeamController extends BaseController {
             'team_name' => 'string',
         ]);
 
+        $synopsis = Synopsis::whereScrollsId($scrollsId)->first();
+
+        if ($synopsis) {
+            throw new SynopsisAlreadyExistsExceptiion();
+        }
+
         $team = Team::whereScrollsId($scrollsId)
             ->first();
 
