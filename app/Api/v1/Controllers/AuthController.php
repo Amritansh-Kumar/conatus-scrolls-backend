@@ -10,13 +10,13 @@ namespace App\Api\v1\Controllers;
 
 use App\Api\v1\Exceptions\InvalidCredentialsException;
 use App\Api\v1\Exceptions\UserNotFoundException;
-
-;
-
 use App\Api\v1\Requests\LoginRequest;
+use App\Api\v1\Requests\PasswordResetByCodeRequest;
+use App\Api\v1\Requests\PasswordResetRequest;
 use App\Api\v1\Transformers\MemberTransformer;
 use App\Api\v1\Transformers\UserTransformer;
 use App\Member;
+use App\Services\AuthService;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -87,6 +87,14 @@ class AuthController extends BaseController {
         }
 
         return JWTAuth::fromUser($user);
+    }
+
+    public function forgotPassword(PasswordResetRequest $request, AuthService $authService) {
+        $authService->forgotPassword($request);
+    }
+
+    public function resetPasswordByCode(PasswordResetByCodeRequest $request, AuthService $authService) {
+        return $authService->resetPasswordByCode($request);
     }
 
 }

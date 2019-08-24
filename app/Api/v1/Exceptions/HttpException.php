@@ -14,6 +14,9 @@ class HttpException extends \Symfony\Component\HttpKernel\Exception\HttpExceptio
     const MEMBER_ALREDAY_EXISTS_EXCEPTION      = 9;
     const SYNOPSIS_ALREDAY_EXISTS_EXCEPTION    = 10;
     const SYNOPSIS_DOESNT_EXISTS_EXCEPTION     = 11;
+    const ERROR_UNAUTHORIZED_ACCESS            = 12;
+    const ERROR_PASSWORD_RESET_CODE            = 13;
+    const ERROR_VERIFY_LIMIT_EXCEEDED          = 14;
 
     public function __construct($message, $errorCode, $statusCode = 422) {
         parent::__construct($statusCode, $message, null, array(), $errorCode);

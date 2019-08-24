@@ -19,4 +19,12 @@ class Helpers {
         }
         return 'SCROLLS' . $domain_id . $val;
     }
+
+    public static function generateUniqueId($length = 9, $start = 'z') {
+        return $start . strtolower(Str::random($length - 1));
+    }
+
+    public static function getFullName($firstName, $lastName = "") {
+        return $lastName === "" ? $firstName : $firstName . ' ' . $lastName;
+    }
 }
