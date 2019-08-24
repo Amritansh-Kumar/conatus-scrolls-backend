@@ -129,6 +129,24 @@ class TeamController extends BaseController {
         return $this->response->item($synopsis, new SynopsisTransformer());
     }
 
+
+    public function deleteSynopsis($scrollsId) {
+        $user = Auth::user();
+
+        $this->leaderAuth($user, $scrollsId);
+
+        $synopsis = Synopsis::whereScrollsId($scrollsId)->first();
+
+        if (!$synopsis) {
+            throw new SynopsisNotFoundException();
+        }
+
+        $s3Service = new S3Service();
+        $s3Service->deleteSynopsis($synopsis->namespace);
+
+        $synopsis->delete();
+    }
+
     public function leaderAuth(User $user, $scrollsId) {
         if ($user->scrolls_id != $scrollsId || $user->status !== User::LEADER) {
             throw new AccessDeniedException();

@@ -40,4 +40,11 @@ class S3Service {
 
         return $url;
     }
+
+    public function deleteSynopsis($path) {
+
+        if (Storage::disk('s3')->exists($path)) {
+            Storage::disk('s3')->delete($path);
+        }
+    }
 }

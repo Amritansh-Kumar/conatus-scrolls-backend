@@ -30,7 +30,7 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
     $api->post('password/forgot', $baseControllersPath . 'AuthController@forgotPassword');
 
-    $api->post('password/reset/code', $baseControllersPath .'AuthController@resetPasswordByCode');
+    $api->post('password/reset/code', $baseControllersPath . 'AuthController@resetPasswordByCode');
 
     $api->post('authenticate', $baseControllersPath . 'AuthController@authenticate');
 
@@ -48,6 +48,7 @@ $api->version('v1', ['middleware' => ['jwt.auth']], function (Router $api) use (
         $api->put('team-details/{id}', $baseControllersPath . 'TeamController@update');
         $api->post('leader/{id}/upload', $baseControllersPath . 'TeamController@uploadSynopsis');
         $api->post('leader/{id}/upload-complete', $baseControllersPath . 'TeamController@completeSynopsisUpload');
+        $api->delete('leader/{id}/synopsis', $baseControllersPath . 'TeamController@deleteSynopsis');
     });
 });
 
