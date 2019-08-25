@@ -44,11 +44,13 @@ $api->version('v1', ['middleware' => ['jwt.auth']], function (Router $api) use (
 
     $api->get('team-details/{id}', $baseControllersPath . 'TeamController@show');
 
+    $api->get('synopsis/{id}/download', $baseControllersPath . 'TeamController@downloadSynopsis');
+
     $api->group(['middleware' => 'api.auth.leader'], function ($api) use ($baseControllersPath) {
         $api->put('team-details/{id}', $baseControllersPath . 'TeamController@update');
         $api->post('leader/{id}/upload', $baseControllersPath . 'TeamController@uploadSynopsis');
         $api->post('leader/{id}/upload-complete', $baseControllersPath . 'TeamController@completeSynopsisUpload');
-        $api->delete('leader/{id}/synopsis', $baseControllersPath . 'TeamController@deleteSynopsis');
+//        $api->delete('leader/{id}/synopsis', $baseControllersPath . 'TeamController@deleteSynopsis');
     });
 });
 

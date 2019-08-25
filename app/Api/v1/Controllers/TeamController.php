@@ -153,6 +153,21 @@ class TeamController extends BaseController {
         $synopsis->delete();
     }
 
+    public function downloadSynopsis($scrollsId) {
+        $user = Auth::user();
+
+        $this->leaderAuth($user, $scrollsId);
+
+        $synopsis = Synopsis::whereScrollsId($scrollsId)->first();
+
+        if (!$synopsis) {
+            throw new SynopsisNotFoundException();
+        }
+
+        return $this->response->item($synopsis, new SynopsisTransformer());
+    }
+
+
     public function leaderAuth(User $user, $scrollsId) {
         if ($user->scrolls_id != $scrollsId || $user->status !== User::LEADER) {
             throw new AccessDeniedException();
