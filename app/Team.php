@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Topic|null $topic
  * @property string $scrolls_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Team whereScrollsId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
  */
 class Team extends Model {
 
@@ -38,6 +39,10 @@ class Team extends Model {
 
     public function topic(){
         return $this->belongsTo(Topic::class);
+    }
+
+    public function users(){
+        return $this->hasMany(User::class);
     }
 
 }

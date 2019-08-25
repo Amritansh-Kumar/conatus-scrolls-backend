@@ -45,6 +45,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @property string $scrolls_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereScrollsId($value)
+ * @property-read \App\Team $team
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -95,7 +96,7 @@ class User extends Authenticatable implements JWTSubject
     const LEADER = 'leader';
     const MEMBER = 'member';
 
-    public function Team() {
+    public function team() {
         return $this->belongsTo(Team::class);
     }
 

@@ -7,21 +7,20 @@ use App\User;
 
 trait UserDetailTrait {
     public function getAttributes(User $user) {
-        return [
-          'first_name' => $user->first_name,
-          'last_name' => $user->last_name,
-          'mob_no' => $user->mob_no,
-          'college' => $user->college,
-          'domain_id' => $this->fetchDomainId($user),
-          'hostel_accomodation' => (bool)$user->hostel_accomodation,
-          'status'          => $user->status,
-          'email' => $user->email,
-          'team_id' => $user->team_id,
-          'scrolls_id' => $user->scrolls_id,
-        ];
-    }
+        $team = $user->team;
 
-    public function fetchDomainId($user) {
-        return Team::find($user->team_id)->domain_id;
+        return [
+            'first_name'          => $user->first_name,
+            'last_name'           => $user->last_name,
+            'email'               => $user->email,
+            'team_id'             => $user->team_id,
+            'college'             => $user->college,
+            'domain_id'           => $team->domain_id,
+            'topic_id'            => $team->topic_id,
+            'team_name'           => $team->team_name,
+            'hostel_accomodation' => (bool)$user->hostel_accomodation,
+            'status'              => $user->status,
+            'scrolls_id'          => $user->scrolls_id,
+        ];
     }
 }
