@@ -90,14 +90,17 @@ class TeamController extends BaseController {
 
         $this->leaderAuth($user, $scrollsId);
 
-        if ($user->team_id != $synopsisRequest->getTeamId()){
+        if ($user->team_id != $synopsisRequest->getTeamId()) {
             throw new AccessDeniedException();
         }
 
         $synopsis = Synopsis::whereScrollsId($scrollsId)->first();
 
         if ($synopsis) {
-            return $this->response->item($synopsis, new SynopsisTransformer());
+            $s3Service = new S3Service();
+            $s3Service->deleteSynopsis($synopsis->namespace);
+
+            $synopsis->delete();
         }
 
         $s3Service = new S3Service();
@@ -126,7 +129,7 @@ class TeamController extends BaseController {
             throw new SynopsisNotFoundException();
         }
 
-        $synopsis->is_completed   = true;
+        $synopsis->is_completed = true;
         $synopsis->save();
 
         return $this->response->item($synopsis, new SynopsisTransformer());
