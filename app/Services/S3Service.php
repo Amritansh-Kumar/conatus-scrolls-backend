@@ -31,7 +31,7 @@ class S3Service {
             'Bucket'       => Config::get('filesystems.disks.s3.bucket'),
             'Key'          => self::getRelativeURL($fileName),
             'ACL'          => 'public-read',
-            'Content-Type' => 'application/pdf'
+            'Content-Type' => 'multipart/form-data'
         ]);
 
         $request = $client->createPresignedRequest($command, '+10 minute');

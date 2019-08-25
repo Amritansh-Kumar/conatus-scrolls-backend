@@ -123,7 +123,6 @@ class TeamController extends BaseController {
         }
 
         $synopsis->is_completed   = true;
-        $synopsis->pre_signed_url = null;
         $synopsis->save();
 
         return $this->response->item($synopsis, new SynopsisTransformer());
