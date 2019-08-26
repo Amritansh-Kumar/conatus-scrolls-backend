@@ -52,5 +52,6 @@ $api->version('v1', ['middleware' => ['jwt.auth']], function (Router $api) use (
         $api->post('leader/{id}/upload-complete', $baseControllersPath . 'TeamController@completeSynopsisUpload');
 //        $api->delete('leader/{id}/synopsis', $baseControllersPath . 'TeamController@deleteSynopsis');
     });
+
 });
 
