@@ -156,7 +156,9 @@ class TeamController extends BaseController {
     public function downloadSynopsis($scrollsId) {
         $user = Auth::user();
 
-        $this->leaderAuth($user, $scrollsId);
+        if ($user->scrolls_id != $scrollsId) {
+            throw new AccessDeniedException();
+        }
 
         $synopsis = Synopsis::whereScrollsId($scrollsId)->first();
 
