@@ -7,30 +7,30 @@ use App\Services\Contracts\UpdateUserContract;
 class UpdateUserRequest extends BaseRequest implements UpdateUserContract {
 
     const HOSTEL_ACCOMODATION = 'hostel_accomodation';
-    const DOMAIN_ID = 'domain_id';
-    const TOPIC_ID = 'topic_id';
+    const MOB_NO              = 'mob_no';
+
+    public function rules() {
+        return [
+            self::MOB_NO              => 'string',
+            self::HOSTEL_ACCOMODATION => 'boolean',
+        ];
+    }
+
 
     public function hasHostelAccomodation() {
         return $this->has(self::HOSTEL_ACCOMODATION);
     }
 
+
     public function getHostelAccomodation() {
         return $this->get(self::HOSTEL_ACCOMODATION);
     }
 
-    public function getDomainId() {
-        return $this->get(self::DOMAIN_ID);
+    public function getMobNo() {
+        return $this->get(self::MOB_NO);
     }
 
-    public function hasDomainId() {
-        return $this->has(self::DOMAIN_ID);
-    }
-
-    public function getTopicId() {
-        return $this->get(self::TOPIC_ID);
-    }
-
-    public function hasTopicId() {
-        return $this->has(self::TOPIC_ID);
+    public function hasMobNo() {
+        return $this->has(self::MOB_NO);
     }
 }

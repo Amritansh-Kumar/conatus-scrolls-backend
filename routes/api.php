@@ -34,10 +34,11 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
     $api->post('authenticate', $baseControllersPath . 'AuthController@authenticate');
 
-    $api->post('register/member', $baseControllersPath . 'UserController@storeMember');
 });
 
 $api->version('v1', ['middleware' => 'jwt.auth'], function (Router $api) use ($baseControllersPath) {
+
+    $api->post('register/member', $baseControllersPath . 'UserController@storeMember');
 
     $api->patch('user/update', $baseControllersPath . 'UserController@update');
 

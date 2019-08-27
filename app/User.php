@@ -46,6 +46,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $scrolls_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereScrollsId($value)
  * @property-read \App\Team $team
+ * @property int $registered
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRegistered($value)
  */
 class User extends Authenticatable implements JWTSubject
 {

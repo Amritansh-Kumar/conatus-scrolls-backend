@@ -16,12 +16,12 @@ class TeamTransformer extends TransformerAbstract {
 
     public function transform(Team $team) {
         $data = [
-            'id'        => $team->id,
-            'team_name' => $team->team_name,
-            'team_id'   => $team->team_id,
-            'domain_id' => $team->domain_id,
-            'topic_id'  => $team->topic_id,
-            'domain'    => $team->domain->domain,
+            'id'         => $team->id,
+            'team_name'  => $team->team_name,
+            'scrolls_id' => $team->scrolls_id,
+            'domain_id'  => $team->domain_id,
+            'topic_id'   => $team->topic_id,
+            'domain'     => $team->domain->domain,
         ];
 
         if ($team->topic) {
