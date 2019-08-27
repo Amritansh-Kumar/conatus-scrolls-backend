@@ -122,7 +122,7 @@ class UserService {
             throw new UserNotFoundException();
         }
 
-        if ($user->registered === false) {
+        if ($user->registered === 0) {
             $user->last_name           = $contract->getLastName();
             $user->mob_no              = $contract->getMobNo();
             $user->college             = $contract->getCollege();
