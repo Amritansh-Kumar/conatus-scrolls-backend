@@ -17,7 +17,8 @@ use App\Api\v1\Transformers\UserTransformer;
 use App\Services\AuthService;
 use App\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class AuthController extends BaseController {
 
