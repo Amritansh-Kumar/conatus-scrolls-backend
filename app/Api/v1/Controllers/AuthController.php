@@ -16,6 +16,7 @@ use App\Api\v1\Requests\PasswordResetRequest;
 use App\Api\v1\Transformers\UserTransformer;
 use App\Services\AuthService;
 use App\User;
+
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -51,6 +52,15 @@ class AuthController extends BaseController {
 //                'registered' => false
 //            ];
 //        } else {
+
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                throw new InvalidCredentialsException();
+            }
+        } catch (JWTException $e) {
+            throw new InvalidCredentialsException();
+        }
+
         $user = User::whereEmail($request->getEmail())
             ->where('scrolls_id', $request->getScrollsId())
             ->first();
@@ -60,14 +70,6 @@ class AuthController extends BaseController {
         }
 
 //        dd(JWTAuth::attempt($credentials));
-
-        try {
-            if (!$token = JWTAuth::attempt($credentials)) {
-                throw new InvalidCredentialsException();
-            }
-        } catch (JWTException $e) {
-            throw new InvalidCredentialsException();
-        }
 
         $userTransformer = new UserTransformer();
         $transformedUser = $userTransformer->transform($user);

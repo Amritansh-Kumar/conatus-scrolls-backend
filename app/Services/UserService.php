@@ -64,9 +64,9 @@ class UserService {
         $user->college             = $contract->getCollege();
         $user->hostel_accomodation = $contract->getHostelAccomodation();
         $user->status              = User::LEADER;
-        $user->email               = $contract->getEmail();
+        $user->email               = trim($contract->getEmail());
         $user->scrolls_id          = $scrollsId;
-        $user->password            = $contract->getPassword();
+        $user->password            = trim($contract->getPassword());
         $user->registered          = true;
         $user->save();
 
