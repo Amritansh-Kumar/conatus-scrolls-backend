@@ -13,14 +13,11 @@ use App\Api\v1\Exceptions\UserNotFoundException;
 use App\Api\v1\Requests\LoginRequest;
 use App\Api\v1\Requests\PasswordResetByCodeRequest;
 use App\Api\v1\Requests\PasswordResetRequest;
-use App\Api\v1\Transformers\MemberTransformer;
 use App\Api\v1\Transformers\UserTransformer;
-use App\Member;
 use App\Services\AuthService;
 use App\User;
-use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWTAuth;
 
 class AuthController extends BaseController {
 
@@ -60,6 +57,8 @@ class AuthController extends BaseController {
         if (!$user) {
             throw new UserNotFoundException();
         }
+
+        dd(JWTAuth::attempt($credentials));
 
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
