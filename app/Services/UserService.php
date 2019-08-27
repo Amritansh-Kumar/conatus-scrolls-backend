@@ -127,6 +127,7 @@ class UserService {
         $user->college             = $contract->getCollege();
         $user->hostel_accomodation = $contract->getHostelAccomodation();
         $user->password            = $contract->getPassword();
+        $user->registered          = true;
         $user->save();
 
         return $user;
