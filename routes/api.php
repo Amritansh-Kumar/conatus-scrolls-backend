@@ -38,7 +38,7 @@ $api->version('v1', function ($api) use ($baseControllersPath) {
 
 });
 
-$api->version('v1', ['middleware' => 'api.auth'], function (Router $api) use ($baseControllersPath) {
+$api->version('v1', ['middleware' => 'jwt.auth'], function (Router $api) use ($baseControllersPath) {
 
     $api->patch('user/update', $baseControllersPath . 'UserController@update');
 
