@@ -59,7 +59,7 @@ class AuthController extends BaseController {
             throw new UserNotFoundException();
         }
 
-        dd(JWTAuth::attempt($credentials));
+//        dd(JWTAuth::attempt($credentials));
 
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
