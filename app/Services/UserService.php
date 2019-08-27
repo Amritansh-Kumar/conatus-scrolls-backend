@@ -122,13 +122,15 @@ class UserService {
             throw new UserNotFoundException();
         }
 
-        $user->last_name           = $contract->getLastName();
-        $user->mob_no              = $contract->getMobNo();
-        $user->college             = $contract->getCollege();
-        $user->hostel_accomodation = $contract->getHostelAccomodation();
-        $user->password            = $contract->getPassword();
-        $user->registered          = true;
-        $user->save();
+        if ($user->registered === false) {
+            $user->last_name           = $contract->getLastName();
+            $user->mob_no              = $contract->getMobNo();
+            $user->college             = $contract->getCollege();
+            $user->hostel_accomodation = $contract->getHostelAccomodation();
+            $user->password            = $contract->getPassword();
+            $user->registered          = true;
+            $user->save();
+        }
 
         return $user;
     }
