@@ -80,7 +80,7 @@ class UserService {
         $fullName           = $contract->getMember1Name();
         if ($contract->hasMember1LastName()) {
             $member->last_name = $contract->getMember1LastName();
-            $fullName          = $fullName . $contract->getMember1LastName();
+            $fullName          = $fullName . ' ' . $contract->getMember1LastName();
         }
         $member->email    = $contract->getMember1Email();
         $password         = Helpers::generatePassword();
@@ -98,7 +98,7 @@ class UserService {
             $fullName           = $contract->getMember2Name();
             if ($contract->hasMember2LastName()) {
                 $member->last_name = $contract->getMember2LastName();
-                $fullName          = $fullName . $contract->getMember2LastName();
+                $fullName          = $fullName . ' ' . $contract->getMember2LastName();
             }
             $member->email    = $contract->getMember2Email();
             $password         = Helpers::generatePassword();
