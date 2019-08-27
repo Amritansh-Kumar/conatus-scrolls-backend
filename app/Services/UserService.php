@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Api\v1\Exceptions\MemberAlreadyExistsException;
 use App\Api\v1\Exceptions\UserAlreadyExistsException;
+use App\Api\v1\Exceptions\UserNotFoundException;
 use App\Helpers;
 use App\Jobs\RegistrationMailJob;
 use App\Member;
@@ -66,35 +67,46 @@ class UserService {
         $user->email               = $contract->getEmail();
         $user->scrolls_id          = $scrollsId;
         $user->password            = $contract->getPassword();
+        $user->registered          = true;
         $user->save();
 
         $memberPasswords = [];
         $memberNames     = [];
 
-        $member             = new Member();
+        $member             = new User();
         $member->team_id    = $team->id;
         $member->scrolls_id = $scrollsId;
-        $member->name       = $contract->getMember1Name();
-        $member->email      = $contract->getMember1Email();
-        $password           = Helpers::generatePassword();
-        $member->password   = Hash::make($password);
+        $member->first_name = $contract->getMember1Name();
+        $fullName           = $contract->getMember1Name();
+        if ($contract->hasMember1LastName()) {
+            $member->last_name = $contract->getMember1LastName();
+            $fullName          = $fullName . $contract->getMember1LastName();
+        }
+        $member->email    = $contract->getMember1Email();
+        $password         = Helpers::generatePassword();
+        $member->password = $password;
         $member->save();
 
         array_push($memberPasswords, $password);
-        array_push($memberNames, $contract->getMember1Name());
+        array_push($memberNames, $fullName);
 
         if ($contract->hasMember2Name()) {
-            $another_member             = new Member();
-            $another_member->team_id    = $team->id;
-            $another_member->scrolls_id = $scrollsId;
-            $another_member->name       = $contract->getMember2Name();
-            $another_member->email      = $contract->getMember2Email();
-            $password                   = Helpers::generatePassword();
-            $another_member->password   = Hash::make($password);
-            $another_member->save();
+            $member             = new User();
+            $member->team_id    = $team->id;
+            $member->scrolls_id = $scrollsId;
+            $member->first_name = $contract->getMember2Name();
+            $fullName           = $contract->getMember2Name();
+            if ($contract->hasMember2LastName()) {
+                $member->last_name = $contract->getMember2LastName();
+                $fullName          = $fullName . $contract->getMember2LastName();
+            }
+            $member->email    = $contract->getMember2Email();
+            $password         = Helpers::generatePassword();
+            $member->password = $password;
+            $member->save();
 
             array_push($memberPasswords, $password);
-            array_push($memberNames, $contract->getMember2Name());
+            array_push($memberNames, $fullName);
         }
 
         $job = new RegistrationMailJob($memberEmails, $memberPasswords, $memberNames, $user);
@@ -104,31 +116,18 @@ class UserService {
     }
 
     public function storeMember(CreateMemberContract $contract) {
-        $user = User::whereEmail($contract->getEmail())
-            ->first();
+        $user = Auth::user();
 
-        if ($user) {
-            throw new UserAlreadyExistsException();
+        if (!$user) {
+            throw new UserNotFoundException();
         }
 
-
-        $user                      = new User();
-        $user->team_id             = $contract->getTeamId();
-        $user->first_name          = $contract->getFirstName();
         $user->last_name           = $contract->getLastName();
         $user->mob_no              = $contract->getMobNo();
         $user->college             = $contract->getCollege();
         $user->hostel_accomodation = $contract->getHostelAccomodation();
-        $user->status              = User::MEMBER;
-        $user->email               = $contract->getEmail();
         $user->password            = $contract->getPassword();
-        $user->scrolls_id          = $contract->getScrollsId();
         $user->save();
-
-        Member::whereEmail($contract->getEmail())
-            ->where('scrolls_id', $contract->getScrollsId())
-            ->delete();
-
 
         return $user;
     }
@@ -140,12 +139,8 @@ class UserService {
             $user->hostel_accomodation = $contract->getHostelAccomodation();
         }
 
-        if ($contract->hasDomainId()) {
-            $user->domain_id = $contract->getDomainId();
-        }
-
-        if ($contract->hasTopicId()) {
-            $user->topic_id = $contract->getTopicId();
+        if ($contract->hasMobNo()) {
+            $user->mob_no = $contract->getMobNo();
         }
 
         $user->save();

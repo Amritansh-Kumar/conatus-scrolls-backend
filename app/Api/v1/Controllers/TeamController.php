@@ -14,6 +14,7 @@ use App\Api\v1\Exceptions\SynopsisAlreadyExistsExceptiion;
 use App\Api\v1\Exceptions\SynopsisNotFoundException;
 use App\Api\v1\Exceptions\TeamNotFoundException;
 use App\Api\v1\Exceptions\TopicNotBelongToDomainException;
+use App\Api\v1\Exceptions\TopicNotFoundException;
 use App\Api\v1\Requests\BaseRequest;
 use App\Api\v1\Requests\UploadSynopsisRequest;
 use App\Api\v1\Transformers\SynopsisTransformer;
@@ -55,11 +56,11 @@ class TeamController extends BaseController {
             'team_name' => 'string',
         ]);
 
-        $synopsis = Synopsis::whereScrollsId($scrollsId)->first();
-
-        if ($synopsis) {
-            throw new SynopsisAlreadyExistsExceptiion();
-        }
+//        $synopsis = Synopsis::whereScrollsId($scrollsId)->first();
+//
+//        if ($synopsis) {
+//            throw new SynopsisAlreadyExistsExceptiion();
+//        }
 
         $team = Team::whereScrollsId($scrollsId)
             ->first();
@@ -70,6 +71,10 @@ class TeamController extends BaseController {
 
         if ($request->has('topic_id')) {
             $topic = Topic::whereId($request->get('topic_id'))->first();
+            if (!$topic) {
+                throw new TopicNotFoundException();
+            }
+
             if ($topic->domain_id !== $team->domain_id) {
                 throw new TopicNotBelongToDomainException();
             }

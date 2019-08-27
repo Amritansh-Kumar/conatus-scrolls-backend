@@ -21,6 +21,7 @@ trait UserDetailTrait {
             'hostel_accomodation' => (bool)$user->hostel_accomodation,
             'status'              => $user->status,
             'scrolls_id'          => $user->scrolls_id,
+            'registered'          => (bool)$user->registered,
         ];
     }
 }

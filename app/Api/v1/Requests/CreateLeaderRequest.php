@@ -16,10 +16,12 @@ class CreateLeaderRequest extends BaseRequest implements CreateLeaderContract {
     const TEAM_NAME           = 'team_name';
     const DOMAIN_ID           = 'domain_id';
 //    const TOPIC_ID = 'topic_id';
-    const MEMBER1_NAME  = 'member1_name';
-    const MEMBER2_NAME  = 'member2_name';
-    const MEMBER1_EMAIL = 'member1_email';
-    const MEMBER2_EMAIL = 'member2_email';
+    const MEMBER1_NAME      = 'member1_name';
+    const MEMBER1_LAST_NAME = 'member1_last_name';
+    const MEMBER2_NAME      = 'member2_name';
+    const MEMBER2_LAST_NAME = 'member2_last_name';
+    const MEMBER1_EMAIL     = 'member1_email';
+    const MEMBER2_EMAIL     = 'member2_email';
 
     public function rules() {
         return [
@@ -32,7 +34,12 @@ class CreateLeaderRequest extends BaseRequest implements CreateLeaderContract {
             self::PASSWORD            => 'required|min:8',
             self::TEAM_NAME           => 'required|string',
             self::DOMAIN_ID           => 'required|exists:domains,id',
-//            self::TOPIC_ID => 'required|exists:topics,id',
+            self::MEMBER1_EMAIL       => 'required|email',
+            self::MEMBER1_NAME        => 'required|string',
+            self::MEMBER1_LAST_NAME   => 'string',
+            self::MEMBER2_EMAIL       => 'email',
+            self::MEMBER2_NAME        => 'string',
+            self::MEMBER2_LAST_NAME   => 'string',
         ];
     }
 
@@ -98,5 +105,21 @@ class CreateLeaderRequest extends BaseRequest implements CreateLeaderContract {
 
     public function hasMember2Name() {
         return $this->has(self::MEMBER2_NAME);
+    }
+
+    public function getMember1LastName() {
+        return $this->get(self::MEMBER1_LAST_NAME);
+    }
+
+    public function getMember2LastName() {
+        return $this->get(self::MEMBER2_LAST_NAME);
+    }
+
+    public function hasMember1LastName() {
+        return $this->has(self::MEMBER1_LAST_NAME);
+    }
+
+    public function hasMember2LastName() {
+        return $this->has(self::MEMBER2_LAST_NAME);
     }
 }
